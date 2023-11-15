@@ -1,0 +1,220 @@
+ -- Table: Hospital
+CREATE TABLE Hospital (
+  id INT PRIMARY KEY
+);
+
+-- Table: Internacoes
+CREATE TABLE Internacoes (
+  id INT PRIMARY KEY,
+  hospital_id INT,
+  FOREIGN KEY (hospital_id) REFERENCES Hospital(id)
+);
+
+-- Table: Quartos
+CREATE TABLE Quartos (
+  id INT PRIMARY KEY
+);
+
+-- Table: Numeracao
+CREATE TABLE Numeracao (
+  id INT PRIMARY KEY,
+  quarto_id INT,
+  FOREIGN KEY (quarto_id) REFERENCES Quartos(id)
+);
+
+-- Table: Tipo_de_Quarto
+CREATE TABLE Tipo_de_Quarto (
+  id INT PRIMARY KEY,
+  quarto_id INT,
+  FOREIGN KEY (quarto_id) REFERENCES Quartos(id)
+);
+
+-- Table: Descricao
+CREATE TABLE Descricao (
+  id INT PRIMARY KEY,
+  tipo_de_quarto_id INT,
+  FOREIGN KEY (tipo_de_quarto_id) REFERENCES Tipo_de_Quarto(id)
+);
+
+-- Table: Valor_Diario
+CREATE TABLE Valor_Diario (
+  id INT PRIMARY KEY,
+  tipo_de_quarto_id INT,
+  FOREIGN KEY (tipo_de_quarto_id) REFERENCES Tipo_de_Quarto(id)
+);
+
+-- Table: Profissionais_de_Enfermagem
+CREATE TABLE Profissionais_de_Enfermagem (
+  id INT PRIMARY KEY,
+  internacao_id INT,
+  FOREIGN KEY (internacao_id) REFERENCES Internacoes(id)
+);
+
+-- Table: Nome
+CREATE TABLE Nome (
+  id INT PRIMARY KEY,
+  profissionais_de_enfermagem_id INT,
+  FOREIGN KEY (profissionais_de_enfermagem_id) REFERENCES Profissionais_de_Enfermagem(id)
+);
+
+-- Table: CPF
+CREATE TABLE CPF (
+  id INT PRIMARY KEY,
+  profissionais_de_enfermagem_id INT,
+  FOREIGN KEY (profissionais_de_enfermagem_id) REFERENCES Profissionais_de_Enfermagem(id)
+);
+
+-- Table: Registro_no_Conselho_de_Enfermagem
+CREATE TABLE Registro_no_Conselho_de_Enfermagem (
+  id INT PRIMARY KEY,
+  profissionais_de_enfermagem_id INT,
+  FOREIGN KEY (profissionais_de_enfermagem_id) REFERENCES Profissionais_de_Enfermagem(id)
+);
+
+-- Table: Convenio
+CREATE TABLE Convenio (
+  id INT PRIMARY KEY
+);
+
+-- Table: Paciente
+CREATE TABLE Paciente (
+  id INT PRIMARY KEY,
+  convenio_id INT,
+  FOREIGN KEY (convenio_id) REFERENCES Convenio(id)
+);
+
+-- Table: Medico_Responsavel
+CREATE TABLE Medico_Responsavel (
+  id INT PRIMARY KEY
+);
+
+-- Table: Sistema_Clinico
+CREATE TABLE Sistema_Clinico (
+  id INT PRIMARY KEY
+);
+
+-- Table: Consultas
+CREATE TABLE Consultas (
+  id INT PRIMARY KEY,
+  sistema_clinico_id INT,
+  FOREIGN KEY (sistema_clinico_id) REFERENCES Sistema_Clinico(id)
+);
+
+-- Table: Dados_Pessoais
+CREATE TABLE Dados_Pessoais (
+  id INT PRIMARY KEY,
+  sistema_clinico_id INT,
+  FOREIGN KEY (sistema_clinico_id) REFERENCES Sistema_Clinico(id)
+);
+
+-- Table: Especialidades
+CREATE TABLE Especialidades (
+  id INT PRIMARY KEY,
+  dados_pessoais_id INT,
+  FOREIGN KEY (dados_pessoais_id) REFERENCES Dados_Pessoais(id)
+);
+
+-- Table: Data_e_Hora
+CREATE TABLE Data_e_Hora (
+  id INT PRIMARY KEY,
+  consultas_id INT,
+  FOREIGN KEY (consultas_id) REFERENCES Consultas(id)
+);
+
+-- Table: Medico
+CREATE TABLE Medico (
+  id INT PRIMARY KEY,
+  consultas_id INT,
+  FOREIGN KEY (consultas_id) REFERENCES Consultas(id)
+);
+
+-- Table: Paciente_1
+CREATE TABLE Paciente_1 (
+  id INT PRIMARY KEY,
+  consultas_id INT,
+  FOREIGN KEY (consultas_id) REFERENCES Consultas(id)
+);
+
+-- Table: Valor_da_Consulta
+CREATE TABLE Valor_da_Consulta (
+  id INT PRIMARY KEY,
+  consultas_id INT,
+  FOREIGN KEY (consultas_id) REFERENCES Consultas(id)
+);
+
+-- Table: Nome_do_Convenio_e_Numero_da_Carteira
+CREATE TABLE Nome_do_Convenio_e_Numero_da_Carteira (
+  id INT PRIMARY KEY,
+  consultas_id INT,
+  FOREIGN KEY (consultas_id) REFERENCES Consultas(id)
+);
+
+-- Table: Especialidade_Buscada
+CREATE TABLE Especialidade_Buscada (
+  id INT PRIMARY KEY,
+  consultas_id INT,
+  FOREIGN KEY (consultas_id) REFERENCES Consultas(id)
+);
+
+-- Table: Dados_Pessoais_1
+CREATE TABLE Dados_Pessoais_1 (
+  id INT PRIMARY KEY
+);
+
+-- Table: Documentos
+CREATE TABLE Documentos (
+  id INT PRIMARY KEY,
+  dados_pessoais_id INT,
+  FOREIGN KEY (dados_pessoais_id) REFERENCES Dados_Pessoais_1(id)
+);
+
+-- Table: Receita_Medica
+CREATE TABLE Receita_Medica (
+  id INT PRIMARY KEY,
+  sistema_clinico_id INT,
+  FOREIGN KEY (sistema_clinico_id) REFERENCES Sistema_Clinico(id)
+);
+
+-- Table: Medicamentos
+CREATE TABLE Medicamentos (
+  id INT PRIMARY KEY,
+  receita_medica_id INT,
+  FOREIGN KEY (receita_medica_id) REFERENCES Receita_Medica(id)
+);
+
+-- Table: Quantidade
+CREATE TABLE Quantidade (
+  id INT PRIMARY KEY,
+  medicamentos_id INT,
+  FOREIGN KEY (medicamentos_id) REFERENCES Medicamentos(id)
+);
+
+-- Table: Instrucoes_de_Uso
+CREATE TABLE Instrucoes_de_Uso (
+  id INT PRIMARY KEY,
+  medicamentos_id INT,
+  FOREIGN KEY (medicamentos_id) REFERENCES Medicamentos(id)
+);
+
+-- Table: Relatorio_de_Receita
+CREATE TABLE Relatorio_de_Receita (
+  id INT PRIMARY KEY,
+  receita_medica_id INT,
+  FOREIGN KEY (receita_medica_id) REFERENCES Receita_Medica(id)
+);
+
+-- Add the "in_activity" column to the "Medico" table
+ALTER TABLE Medico
+ADD in_activity BOOLEAN;
+
+-- Update at least two doctors as inactive (set "in_activity" to false)
+-- Update doctors with specific IDs as needed, here we assume doctors with IDs 1 and 2 are being set as inactive
+UPDATE Medico
+SET in_activity = false
+WHERE id IN (1, 2);
+
+-- Update the rest of the doctors as active (set "in_activity" to true)
+-- Assuming that all other doctors should remain active
+UPDATE Medico
+SET in_activity = true
+WHERE id NOT IN (1, 2);
